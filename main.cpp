@@ -9,6 +9,8 @@ struct Rgb
 };
 void filter_red(Rgb &pixel);
 void display_pixel_channels(const Rgb &pixel, string name);
+void blackout_image_pointer(const int &width, const int& height, Rgb *image );
+void whiteout_image(const int &width, const int& height, Rgb *image );
 int main() {
     Rgb blackPixel;
     Rgb whitePixel(1.0,1.0,1.0);
@@ -26,6 +28,16 @@ int main() {
     display_pixel_channels(bluePixel, "Blue");
     display_pixel_channels(magentaPixel, "Magenta");
     display_pixel_channels(whitePixel, "White");
+    int width = 200;
+    int height = 100;
+    Rgb *image = new Rgb[width*height];
+    whiteout_image(width, height, image);
+
+    int r = 100;
+    int c = 199;
+    Rgb pixel = image[(r-1)*width + (c-1)];
+    cout << pixel.r <<", "<< pixel.g <<", "<< pixel.b <<endl;
+
     return 0;
 }
 void display_pixel_channels(const Rgb &pixel, string name)
@@ -38,4 +50,30 @@ void filter_red(Rgb &pixel)
 {
     pixel.g = 0;
     pixel.b = 0;
+}
+
+void blackout_image_pointer(const int &width, const int& height, Rgb *image )
+{
+    for(int c = 0; c < width*height; c++)
+    {
+        image->r = 0;
+        image->g = 0;
+        image->b = 0;
+        image++;
+    }
+
+
+}
+
+void whiteout_image(const int &width, const int& height, Rgb *image )
+{
+    for(int r = 0; r < height; r++)
+    {
+        for(int c = 0; c < width; c++)
+        {
+            image[r*width+c].r = 1;
+            image[(r)*width+(c)].g = 1;
+            image[(r)*width+(c)].b = 1;
+        }
+    }
 }
